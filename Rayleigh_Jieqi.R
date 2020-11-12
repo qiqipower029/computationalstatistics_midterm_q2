@@ -62,7 +62,7 @@ mixture_rayleigh = function(y, init, tol = 1e-05, max.iter = 1000) {
   v = log(t(replicate(n, newpi)) * outer(y, newsigma, drayleigh))
   loglik = sum(w * log(t(replicate(n, newpi)) * outer(y, newsigma, drayleigh)))
   
-  return(list(n = n, k = k, iter = iter, loglikelihood = loglik, init = init, pi = newpi, sigma = newsigma))
+  return(list(n = n, k = k, iter = iter, loglikelihood = loglik, init = init, pi = newpi, sigma = newsigma, max.iter = max.iter))
 }
 
 # (3) Execute iteration
@@ -82,19 +82,6 @@ sum(x3[1]) + sum(x3[2])
 
 
 # ------------------------------ Generate output--------------------------------#
-# k = 2, n = 10000
-k = 2
-n = 10000
-pi.TRUE = c(0.3, 0.7)
-sigma.TRUE = c(1, 10)
-set.seed(1)
-z.TRUE = sample(1:k, size = n, replace = T, prob = pi.TRUE)
-y = sapply(z.TRUE, function(z) rrayleigh(1, sigma.TRUE[z]))
-plot(density(y))
-cluster.kmeans = kmeans(y, centers = k)
-init = list(pi = as.numeric(table(cluster.kmeans$cluster)/n)[order(cluster.kmeans$centers[,1])],
-            sigma = as.numeric(sort(cluster.kmeans$centers[,1]*sqrt(2/pi))))
-result1 = unlist(mixture_rayleigh(y, init, max.iter = 30))
 
 #-------------k = 2, n = 10000--------------#
 k = 2
@@ -104,7 +91,6 @@ sigma.TRUE = c(1, 10)
 set.seed(1)
 z.TRUE = sample(1:k, size = n, replace = T, prob = pi.TRUE)
 y = sapply(z.TRUE, function(z) rrayleigh(1, sigma.TRUE[z]))
-plot(density(y))
 cluster.kmeans = kmeans(y, centers = k)
 init = list(pi = as.numeric(table(cluster.kmeans$cluster)/n)[order(cluster.kmeans$centers[,1])],
             sigma = as.numeric(sort(cluster.kmeans$centers[,1]*sqrt(2/pi))))
@@ -145,6 +131,14 @@ result8 = unlist(mixture_rayleigh(y, init, max.iter = 5000))
 
 #-------------k = 3, n = 1000 --------------#
 n = 1000
+pi.TRUE = c(0.3, 0.4, 0.3)
+sigma.TRUE = c(1, 10, 20)
+set.seed(1)
+z.TRUE = sample(1:k, size = n, replace = T, prob = pi.TRUE)
+y = sapply(z.TRUE, function(z) rrayleigh(1, sigma.TRUE[z]))
+cluster.kmeans = kmeans(y, centers = k)
+init = list(pi = as.numeric(table(cluster.kmeans$cluster)/n)[order(cluster.kmeans$centers[,1])],
+            sigma = as.numeric(sort(cluster.kmeans$centers[,1]*sqrt(2/pi))))
 result9 = unlist(mixture_rayleigh(y, init, max.iter = 15))
 result10 = unlist(mixture_rayleigh(y, init, max.iter = 50))
 result11 = unlist(mixture_rayleigh(y, init, max.iter = 5000))
@@ -186,7 +180,7 @@ mixture_rayleigh = function(y, init, tol = 1e-05, max.iter = 1000) {
   v = log(t(replicate(n, newpi)) * outer(y, newsigma, drayleigh))
   loglik = sum(w * log(t(replicate(n, newpi)) * outer(y, newsigma, drayleigh)), na.rm = T)
   
-  return(list(n = n, k = k, iter = iter, loglikelihood = loglik, init = init, pi = newpi, sigma = newsigma))
+  return(list(n = n, k = k, iter = iter, loglikelihood = loglik, init = init, pi = newpi, sigma = newsigma, max.iter = max.iter))
 }
 
 # k = 2, n = 10000
@@ -238,6 +232,12 @@ result19 = unlist(mixture_rayleigh(y, init, max.iter = 5000))
 
 #-------------k = 3, n = 1000 --------------#
 n = 1000
+z.TRUE = sample(1:k, size = n, replace = T, prob = pi.TRUE)
+y = sapply(z.TRUE, function(z) rrayleigh(1, sigma.TRUE[z]))
+plot(density(y))
+cluster.kmeans = kmeans(y, centers = k)
+init = list(pi = as.numeric(table(cluster.kmeans$cluster)/n)[order(cluster.kmeans$centers[,1])],
+            sigma = as.numeric(sort(cluster.kmeans$centers[,1]*sqrt(2/pi))))
 result20 = unlist(mixture_rayleigh(y, init, max.iter = 15))
 result21 = unlist(mixture_rayleigh(y, init, max.iter = 50))
 result22 = unlist(mixture_rayleigh(y, init, max.iter = 5000))

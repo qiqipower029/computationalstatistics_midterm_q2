@@ -298,3 +298,11 @@ re31 = unlist(mixture_exponential(y, init,  max.iter = 1))
 re32 = unlist(mixture_exponential(y, init,  max.iter = 5))
 
 k4_removena = rbind(re29, re30, re31, re32)
+
+library(openxlsx)
+write.xlsx(k2, file = "expk2_1111_Jieqi.xlsx")
+write.xlsx(k3, file = "expk3_1111_Jieqi.xlsx")
+write.xlsx(k4, file = "expk4_1111_Jieqi.xlsx")
+write.xlsx(k2_removena, file = "expk2rm_1111_Jieqi.xlsx")
+write.xlsx(k3_removena, file = "expk3rm_1111_Jieqi.xlsx")
+write.xlsx(k4_removena, file = "expk4rm_1111_Jieqi.xlsx")
