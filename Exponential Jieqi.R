@@ -25,7 +25,7 @@ init = list(pi = as.numeric(table(cluster.kmeans$cluster)/n)[order(cluster.kmean
             lambda = as.numeric(1/sort(cluster.kmeans$centers[,1])))
 
 # (2) Algorithm
-mixture_exponential <- function(y, init, tol = 1e-05, max.iter = 5000) {
+mixture_exponential <- function(y, init, tol = 1e-06, max.iter = 1000000) {
   n = length(y)
   k = length(init$pi)
   
@@ -158,7 +158,7 @@ k4 = rbind(re13, re14, re15, re16)
 
 
 # Then we want to see what will happen if we remove NaN
-mixture_exponential <- function(y, init, tol = 1e-05, max.iter = 5000) {
+mixture_exponential <- function(y, init, tol = 1e-06, max.iter = 10000000) {
   n = length(y)
   k = length(init$pi)
   
