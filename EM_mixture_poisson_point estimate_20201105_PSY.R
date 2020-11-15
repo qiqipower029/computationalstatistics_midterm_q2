@@ -90,7 +90,7 @@ mixture_poisson = function(y, init, tol = 1e-05, max.iter = 5000) {
   w = t(replicate(n, pi_after)) * outer(y, lambda_after, dpois) / replicate(k, rowSums(t(replicate(n, pi_after)) * outer(y, lambda_after, dpois)))
   loglik = sum(w * log(t(replicate(n, pi_after)) * outer(y, lambda_after, dpois)))
 
-  return(list(iter = iter, loglik = loglik, init = init, pi = pi_after, lambda = lambda_after))
+  return(list(iter = iter, loglik = loglik, init = init, pi = pi_after, lambda = lambda_after, wp = w))
 }
 
 # (3) Execute iteration
