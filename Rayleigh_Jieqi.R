@@ -29,7 +29,7 @@ init = list(pi = as.numeric(table(cluster.kmeans$cluster)/n)[order(cluster.kmean
             sigma = as.numeric(sort(cluster.kmeans$centers[,1]*sqrt(2/pi))))
 
 # (2) Algorithm
-mixture_rayleigh = function(y, init, tol = 1e-05, max.iter = 1000) {
+mixture_rayleigh = function(y, init, tol = 1e-06, max.iter = 10000000) {
   n = length(y)
   k = length(init$pi)
   

@@ -47,7 +47,7 @@ init = list(pi = as.numeric(table(cluster.kmeans$cluster)/n)[order(cluster.kmean
 
 
 # (2) Algorithm
-mixture_poisson = function(y, init, tol = 1e-05, max.iter = 5000) {
+mixture_poisson = function(y, init, tol = 1e-06, max.iter = 100000000) {
   n = length(y)
   k = length(init$pi)
   
