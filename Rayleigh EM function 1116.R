@@ -1,3 +1,7 @@
+library(magrittr)
+library(VGAM)
+
+
 #---------------------EM function for Rayleigh --------------------#
 mixture_rayleigh = function(y, init, tol = 1e-06, max.iter = 100000000000) {
   n = length(y)
@@ -34,3 +38,22 @@ mixture_rayleigh = function(y, init, tol = 1e-06, max.iter = 100000000000) {
   
   return(list(n = n, k = k, iter = iter, loglikelihood = loglik, init = init, pi = newpi, sigma = newsigma, max.iter = max.iter))
 }
+
+#---------Scenario setting----------#
+n = 10000
+k = 6
+pi.TRUE     = c(0.166667, 0.166667, 0.166667, 0.166667, 0.166667, 0.166667)
+sigma.TRUE = c(0.3, 8, 30, 80, 150, 250)
+
+set.seed(1)
+z.TRUE = sample(1:k, size = n, replace = T, prob = pi.TRUE)
+y = sapply(z.TRUE, function(z) rexp(1, lambda.TRUE[z]))
+set.seed(1)
+cluster.kmeans = kmeans(y, centers = k)
+init = list(pi = as.numeric(table(cluster.kmeans$cluster)/n)[order(cluster.kmeans$centers[,1])],
+            sigma = as.numeric(1/sort(cluster.kmeans$centers[,1])))
+
+#--------Execute the function----------#
+ptm = proc.time()
+mixture_rayleigh(y, init)
+proc.time() - ptm

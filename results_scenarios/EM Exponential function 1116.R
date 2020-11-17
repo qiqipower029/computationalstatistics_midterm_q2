@@ -41,7 +41,7 @@ mixture_exponential <- function(y, init, tol = 1e-06, max.iter = 10000000) {
 n = 10000
 k = 6
 pi.TRUE     = c(0.166667, 0.166667, 0.166667, 0.166667, 0.166667, 0.166667)
-lambda.TRUE = c(0.3, 0.8, 3, 8, 15, 25)
+lambda.TRUE = c(0.3, 8, 30, 80, 150, 250)
 
 set.seed(1)
 z.TRUE = sample(1:k, size = n, replace = T, prob = pi.TRUE)
