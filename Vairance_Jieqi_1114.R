@@ -109,4 +109,47 @@ variance.function.poisson = function(w.matrix, p.est, lambda.est, y) {
     psi.12[l,l] = sum((y/lambda.est[l]-1)*(w.matrix[,l]*(1-w.matrix[,l])/p.est[l]+w.matrix[,l]*w.matrix[,k]/p.est[k]))
   }
   psi.21 = t(psi.12)
+  
+  # Generate psi matrix
+  psi.upper = cbind(psi.11, psi.12);psi.lower = cbind(psi.21, psi.22); psi = rbind(psi.upper, psi.lower)
+  
+  # -----gamma 11-----#
+  gamma.11 = matrix(nrow = k-1, ncol = k-1)
+  for (l in 1:k-1) {
+    b = l+1
+    if(b<=k-1){
+      # off-diagonal entry
+      for (j in b:k-1) {
+        gamma.11[l,j] = sum(w.matrix[,k]/(p.est[k])^2)
+        gamma.11[j,l] = gamma.11[l,j]
+      }
+    }
+    # diagonal entry
+    gamma.11[l,l] = sum(w.matrix[,l]/(p.est[l]^2)+w.matrix[,k]/(p.est[k])^2)
+  }
+  
+  # -----gamma 22-----#
+  gamma.22 = matrix(nrow = k, ncol = k)
+  for (l in 1:k) {
+    b = l+1
+    if(b<=k){
+      # off-diagonal entry
+      for (j in b:k) {
+        gamma.22[l,j] = 0
+        gamma.22[j,l] = 0
+      }
+    }
+    # diagonal entry
+    gamma.22[l,l] = sum(y/(lambda.est[l])^2*w.matrix[,l])
+  }
+  
+  # -----gamma 12-----#
+  gamma.12 = matrix(0, nrow = k-1, ncol = k)
+  gamma.21 = t(gamma.12)
+  gamma.upper = cbind(gamma.11, gamma.12);gamma.lower = cbind(gamma.21, gamma.22); gamma = rbind(gamma.upper, gamma.lower)
+  
+  # Generate the final variance matrix
+  variance.matrix = solve(-psi + gamma)
+  return(variance.matrix)
 }
+
