@@ -147,9 +147,24 @@ mixture_poisson = function(y, init, tol = 1e-06, max.iter = 100000000) {
 
 ############################################################################### Generate the final variance matrix
   variance.nopk = solve(-psi + gamma)
-
+  
   # Add elements for p_k
-  variance.matrix = matrix(nrow = 2*k, ncol = 2*k)
+  variance.matrix = matrix(0, ncol = 2*k, nrow = 2*k)
+  variance.matrix[-k,-k] = variance.nopk
+  vec1 = matrix(1, nrow = 1, ncol = k-1)
+  var_pp = variance.nopk[1:k-1, 1:k-1]
+  var_plambda = variance.nopk[1:k-1, k:(2*k-1)]
+  variance.matrix[k,k] = vec1 %*% var_pk_1 %*% t(vec1)
+  
+  for (j in 1:k-1) {
+    variance.matrix[k, j] = sum(var_pp[,j])
+    variance.matrix[j, k] = variance.matrix[k, j]
+  }
+  
+  for (j in 1:k) {
+    variance.matrix[k, k+j] = sum(var_plambda[,j])
+    variance.matrix[k+j, k] = variance.matrix[k, k+j]
+  }
 
 ############################################################################### Return final estimate
   return(list(comp_time = as.vector((proc.time() - ptm)[3]),
