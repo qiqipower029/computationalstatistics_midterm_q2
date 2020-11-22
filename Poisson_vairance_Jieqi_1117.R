@@ -149,7 +149,26 @@ variance.function.poisson = function(w.matrix, p.est, lambda.est, y) {
   gamma.upper = cbind(gamma.11, gamma.12);gamma.lower = cbind(gamma.21, gamma.22); gamma = rbind(gamma.upper, gamma.lower)
   
   # Generate the final variance matrix
-  variance.matrix = solve(-psi + gamma)
+  variance.nopk = solve(-psi + gamma)
+  
+  # Add elements for p_k
+  variance.matrix = matrix(0, ncol = 2*k, nrow = 2*k)
+  variance.matrix[-k,-k] = variance.nopk
+  vec1 = matrix(1, nrow = 1, ncol = k-1)
+  var_pp = variance.nopk[1:k-1, 1:k-1]
+  var_plambda = variance.nopk[1:k-1, k:(2*k-1)]
+  variance.matrix[k,k] = vec1 %*% var_pk_1 %*% t(vec1)
+  
+  for (j in 1:k-1) {
+    variance.matrix[k, j] = sum(var_pp[,j])
+    variance.matrix[j, k] = variance.matrix[k, j]
+  }
+  
+  for (j in 1:k) {
+    variance.matrix[k, k+j] = sum(var_plambda[,j])
+    variance.matrix[k+j, k] = variance.matrix[k, k+j]
+  }
+  
   return(variance.matrix)
 }
 
