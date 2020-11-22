@@ -1,4 +1,4 @@
-# library(magrittr)
+library(magrittr)
 ############################################################################################### Generate Data 
 ############################################################################################### Scenario setting 
 Scenario = function(n, k, pi.TRUE, lambda.TRUE, seed){
