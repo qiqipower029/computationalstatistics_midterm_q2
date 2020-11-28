@@ -154,7 +154,7 @@ mixture_poisson = function(y, init, tol = 1e-06, max.iter = 100000000) {
   vec1 = matrix(1, nrow = 1, ncol = k-1)
   var_pp = variance.nopk[1:k-1, 1:k-1]
   var_plambda = variance.nopk[1:k-1, k:(2*k-1)]
-  variance.matrix[k,k] = vec1 %*% var_pk_1 %*% t(vec1)
+  variance.matrix[k,k] = vec1 %*% var_pp %*% t(vec1)
   
   for (j in 1:k-1) {
     variance.matrix[k, j] = sum(var_pp[,j])
