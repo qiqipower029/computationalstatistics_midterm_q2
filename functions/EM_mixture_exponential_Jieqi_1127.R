@@ -9,7 +9,7 @@ Scenario = function(n, k, pi.TRUE, lambda.TRUE, seed){
   set.seed(1)
   cluster.kmeans = kmeans(y, centers = k)
   init = list(pi = as.numeric(table(cluster.kmeans$cluster)/n)[order(cluster.kmeans$centers[,1])],
-              lambda = as.numeric(sort(cluster.kmeans$centers[,1]))) # specific for POI
+              lambda = as.numeric(sort(1/cluster.kmeans$centers[,1]))) # specific for exponential
   return(list(y=y,init=init,pi.TRUE=pi.TRUE,lambda.TRUE=lambda.TRUE))
 }
 
