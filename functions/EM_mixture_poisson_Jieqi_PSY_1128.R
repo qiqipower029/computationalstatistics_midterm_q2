@@ -165,6 +165,15 @@ mixture_poisson = function(y, init, tol = 1e-06, max.iter = 100000000) {
     variance.matrix[k, k+j] = sum(var_plambda[,j])
     variance.matrix[k+j, k] = variance.matrix[k, k+j]
   }
+  
+  colname = vector(length = 2*k)
+  for (i in 1:k) {
+    colname[i] = paste0("p",i)
+    colname[k+i] = paste0("lambda", i)
+  }
+  rownames(variance.matrix) = colname
+  colnames(variance.matrix) = colname
+  
 
 ############################################################################### Return final estimate
   return(list(comp_time = as.vector((proc.time() - ptm)[3]),
